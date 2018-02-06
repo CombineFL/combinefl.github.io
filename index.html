@@ -44,6 +44,33 @@
       </p>
 
       <h3> Documentation </h3>
+<p> 1. Download the tool <a href="downloads/CombineFL-v0.1.tar.gz">here.</a>
+<p> 2. Unzip the TAR file:
+<pre>
+$ tar czvf CombineFL-v0.1.tar.gz
+$ cd combinefl
+</pre></p>
+<p> 3. Combine techniques and Generate SVMRank file (add-in file is optional):
+<pre>
+$ python 1-combine.py [-c &lt;add-in-file&gt;]
+</pre>
+</p>
+<p> 4. Split file for k-fold validation:
+<pre>
+$ ./2-split.sh
+</pre>
+</p>
+<p> 5. Train and Predict in each fold:
+<pre>
+$ ./3-crossvalidation.sh
+</pre>
+</p>
+<p> 6. Calculate the metrics:
+<pre>
+$ python 4-calc-metric.py
+</pre>
+</p>
+<p>More detailed information is available in <code>README</code> file.</p>
     </div>
   </body>
 </html>
