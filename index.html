@@ -25,9 +25,12 @@
         <!-- <h3>An infrastructure for evaluating and combining fault localization techniques.</h3> -->
       </div>
 
-
-      <h3>An infrastructure for evaluating and combining fault localization techniques.</h3>
-      <p>
+      <h2>CombineFL - version 0.1</h2>
+      <p> CombineFL is an infrastructure for evaluating and combining fault
+localization techniques for developers and researches.</p>
+<hr>
+      <h3> 1 Contents of CombineFL </h3>
+      
         <ul>
           <li> Faults dataset: <a href="https://github.com/rjust/defects4j">Defects4j</a> </li>
           <li> Included techniques:
@@ -38,38 +41,121 @@
               <li>Stack trace analysis</li>
               <li>Predicate switching</li>
               <li>History-based fault localization</li>
+              <li>Information retrieve-based fault localization (coming soon)</li>
             </ul>
           </li>
         </ul>
+<hr>
+      <h3> 2 Setting up </h3>
+      <h4> 2.1 Requirements </h4>
+      <p>
+      <ul>
+        <li> Python 2.7 </li>
+        <li> Java 1.7 </li>
+      </ul>
       </p>
-
-      <h3> Documentation </h3>
-<p> 1. Download the tool <a href="downloads/CombineFL-v0.1.tar.gz">here.</a>
+      <h4> 2.2 Setting Steps </h4>
+<p> 1. Download the tool at <a href="downloads/CombineFL-v0.1.tar.gz">https://combinefl.github.io/downloads/CombineFL-v0.1.tar.gz</a>
 <p> 2. Unzip the TAR file:
 <pre>
-$ tar czvf CombineFL-v0.1.tar.gz
-$ cd combinefl
+  $ tar czvf CombineFL-v0.1.tar.gz
 </pre></p>
-<p> 3. Combine techniques and Generate SVMRank file (add-in file is optional):
+
+<hr>
+<h3> 3 Using CombineFL </h3>
+
+<h4>3.1 Use existing techniques</h4>
+<p>1 Combine techniques and Generate SVMRank file
 <pre>
-$ python 1-combine.py [-c &lt;add-in-file&gt;]
+  $ cd combinefl
+  $ python 1-combine.py
 </pre>
 </p>
-<p> 4. Split file for k-fold validation:
+
+<p>2 Split file for k-fold validation:
 <pre>
-$ ./2-split.sh
+  $ ./2-split.sh
 </pre>
 </p>
-<p> 5. Train and Predict in each fold:
+
+<p> 3. Train and Predict in each fold:
 <pre>
-$ ./3-crossvalidation.sh
+  $ ./3-crossvalidation.sh
 </pre>
 </p>
-<p> 6. Calculate the metrics:
+
+<p> 4. Calculate the metrics:
 <pre>
-$ python 4-calc-metric.py
+  $ python 4-calc-metric.py
 </pre>
 </p>
+
+<hr>
+<h4>3.2 Add your technique(s) to the infrastructure</h4>
+<p>1 Combine techniques and Generate SVMRank file
+<pre>
+  $ cd combinefl
+  $ python 1-combine.py -f &lt;add-in-file-path&gt;
+</pre>
+</p>
+
+<p>2 Split file for k-fold validation:
+<pre>
+  $ ./2-split.sh
+</pre>
+</p>
+
+<p> 3. Train and Predict in each fold:
+<pre>
+  $ ./3-crossvalidation.sh
+</pre>
+</p>
+
+<p> 4. Calculate the metrics:
+<pre>
+  $ python 4-calc-metric.py
+</pre>
+</p>
+
+<hr>
+
+<h4>3.3 Format for add-in data file</h4>
+
+<p> Standard JSON format. </p>
+
+<p>For each fault in Defects4J dataset, use the project name and number.
+        Format: &lt;project&gt;&lt;fault_number&gt;  Example: 'math1', 'time15'</p>
+
+<p>
+    For each suspicious statement, use the classname and line number. Such as:
+        Format: &lt;classname&gt;:&lt;linenumber&gt; Example: 'com.google.javascript.rhino.Node:393'</p>
+
+<p>
+    For suspicious score, use a float in range (0, 1).
+        Format: &lt;method_name&gt;: &lt;score&gt;</p>
+
+<p> An add-in file example: </p>
+<pre>
+{
+  "math1": {
+    "org.apache.commons.math3.exception.util.LocalizedFormats:95": {
+      "new_method1": 0.2,
+      "new_method2": 0.5
+    },
+    "org.apache.commoms.math3.fraction.BigFraction:90": {
+      "new_method1": 0.6,
+      "new_method2": 0.1
+    }
+  },
+  "time8": {
+    "org.joda.time.tz.ZoneInfoProvider:201": {
+      "new_method1": 0.1,
+      "new_method2": 0.3
+    }
+  }
+}
+</pre>
+<hr>
 <p>More detailed information is available in <code>README</code> file.</p>
     </div>
   </body>
